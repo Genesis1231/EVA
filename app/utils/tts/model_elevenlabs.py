@@ -8,7 +8,7 @@ from elevenlabs.client import ElevenLabs
 from elevenlabs import stream, VoiceSettings
     
 class ElevenLabsSpeaker:
-    def __init__(self, voice: str = "Ana") -> None:
+    def __init__(self, voice: str = "TbMNBJ27fH2U0VgpSNko") -> None:
         self.model: ElevenLabs = ElevenLabs()
         self.audio_thread: Optional[Thread] = None
         self.voice: str = voice # voice could be configured in the future
@@ -48,10 +48,13 @@ class ElevenLabsSpeaker:
     def generate_audio(self, text: str, language: Optional[str], media_folder: str) -> Optional[str]:
         """ Generate mp3 from text using ElevenLabs """
         
-        model_name: str = "eleven_monolingual_v1" if self.language == "en" else "eleven_turbo_v2_5"
+        model_name: str = "eleven_monolingual_v1" if language == "en" else "eleven_turbo_v2_5"
         
         filename = f"{secrets.token_hex(16)}.mp3"
         file_path = os.path.join(media_folder, "audio", filename)
+        
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
         
         try:
             audio_stream = self.model.generate(
@@ -62,7 +65,13 @@ class ElevenLabsSpeaker:
             )
         
             with open(file_path, 'wb') as f:
-                f.write(audio_stream)
+                audio_data = b''
+                for chunk in audio_stream:
+                    audio_data += chunk
+                f.write(audio_data)
+            
+            # Log the file path for debugging
+            logger.info(f"Audio file saved to: {file_path}")
             
             return f"audio/{filename}"
         

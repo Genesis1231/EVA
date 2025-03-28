@@ -78,8 +78,8 @@ def create_google_model(
         raise Exception(f"Error: Failed to initialize Google model: {str(e)}")
     
 def create_anthropic_model(
-        model_name: str = "claude-3-5-sonnet-latest", 
-        temperature: float = 0.7
+        model_name: str = "claude-3-7-sonnet-latest", 
+        temperature: float = 0.8
     ) -> BaseLanguageModel:
     
     from langchain_anthropic import ChatAnthropic

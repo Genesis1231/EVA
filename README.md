@@ -19,19 +19,56 @@ Hi there! Welcome to the EVA project 👋
 
 So, here's the story - I used to sling code back in the days (like, when Perl was still cool), but then a year ago AI came along and i became fascinated by the potential of AI to transform how we interact with technology. I noticed many projects most focused on specific use cases rather than providing a flexible foundation for exploration. So I spent a few months to code EVA myself.
 
-EVA is an experimental voice assistant that reimagines human-AI interaction through intelligent, proactive engagement and autonomous capabilities. EVA actively participates in conversations while executing complex tasks seamlessly in the background. Its flexible, modular architecture allows it to leverage AI models for speech, vision, and thinking like human beings, while an extensive framework of tools enables EVA to perform a wide range of tasks.
+EVA is an experimental voice assistant that reimagines human-AI interaction through intelligent, proactive engagement and autonomous capabilities: 
+- EVA is aware of the environment, actively seek information and detect changes around her. (sensitivity adjustable)
+- EVA actively participates in conversations, not only employing contextual strategies but also setting groundings for future interaction. (e.g. you might find it hard to play guessing game with ChatGPT because it doesnt remember unspoken thoughts.)
+- EVA can recognize users by their voices or faces, creating a more personalized and engaging interactive experience. (e.g., facilitate a party game where everyone keeps their eyes closed.)
+- EVA can multitasks seamlessly in the background during the conversation. (Now ChatGPT realtime model can do it too 😞 )
+- With a customizable toolkit, EVA automatically creates a varity of new experiences like making images and music, or searching for videos based on the context. (e.g. she often creates soothing music when it's late hour and I am home alone)  
 
-Hope you have some interesting experience with EVA!
+Overall, EVA's flexible, modular architecture allows it to leverage AI models for speech, vision, and thinking like human beings. Hope you have some interesting experiences with EVA!
+
+If you like EVA, please give us ⭐⭐, it keeps me motivated. thank you!
+
+## 🤖 DEMO
+<div align="center">
+  
+https://github.com/user-attachments/assets/1029cf35-afea-450f-8e1f-9f4ae7b4a74f
+
+</div>
+<div align="center">
+EVA greets me with care after seeing I'm a bit tired. ❤️ <br/>
+She simultaneously researched about Persian cats online, <br/>
+  and created 2 sets of pictures: adult and baby cats. 😸😹
+</div>
+<br/><br/>
 
 <div align="center">
-![Demo Video](./docs/video1.mp4)
+
+https://github.com/user-attachments/assets/01d7bc58-c180-4d66-ad33-96aad0476e0c
+
+</div>
+<div align="center">
+EVA got a bit carried away and collected 6 youtube videos about Persian cats. 😮😮😾
 </div>
 
 ## 📜 Updates
+- 2025-March update: React version of the web interface.<br/>
+  I vibe coded a simple web interface for EVA. It works with the mobile client module.
+  ![EVA Web](docs/screen.png)
+  Please refer to the WebSocket documentation for more details.
 
-- 2024-Chrimas: Initialization process improved.
-  Eva now guides the user to complete the initialization process. Record the Voice ID and Photo ID for personalized interaction. if you want to update the ID, you can go to app/data/pid/ or app/data/void/ to replace the files.
-  
+- 2025-February update: WebSocket connection improved.<br/>
+  Eva now supports WebSocket connection for remote control.
+  You can use the WebSocket to interact with EVA. This version works much better with the mobile app.
+
+- 2024-Christmas update: Initialization process improved.<br/>
+  Eva now guides the user to complete the initialization process. Record the Voice ID and Photo ID for personalized interaction.
+  You can update the voice or photo ID by replacing the files in app/data/pid/ and app/data/void/.
+
+- 2024-November update: Multilingual mode.<br/>
+  Eva now replies with the same language the user speaks with "Multilingual" language mode.
+  Make sure your language is supported by selected text-to-speech model.
 
 ## ✨ Key Features
 
@@ -41,12 +78,13 @@ EVA is built on LangGraph framework, with some customized modules and tools. Imp
 - Configurable model selection for LLM, TTS, STT, and vision etc.
 - Integrated with OpenAI, Anthropic, Groq, Google, and Ollama.
 - Easy modification of prompts and tools.
-- Supports both desktop and mobile app
+- Supports both desktop and mobile app.
 
 ### 🖼️ Interactive experience
 - Voice ID and vision ID for personalized interaction.
 - Proactive style communication (varies between models)
 - Multi-modal outputs with asynchronous action.
+- Memory log and semantic memory scan (testing)
 
 ### 🔌 Dynamic Tool system
 - Web search through DuckDuckGo/Tavily
@@ -75,7 +113,6 @@ EVA/
 │       ├── stt/         # Speech-to-text models and classes
 │       ├── tts/         # Text-to-Speech models and classes
 │       └── vision/      # Vision models and functions
-├── test/               # Test cases (😢)
 └── docs/                # Documentation (😩)
 
 ```
@@ -161,12 +198,12 @@ configure EVA setting in app/config/config.py
 ```python
 eva_configuration = {
   # Client device setting: 
-  # Currently "desktop" or "mobile" (testing)
+  # Currently "desktop" or "mobile"  
     "DEVICE": "desktop", 
   
   # Language setting:
   # suports all major languages. suffix such "en" (English), "es" (Spanish), "zh" (Chinese), or you can use "multilingual"(slower)
-    "LANGUAGE": "en", 
+    "LANGUAGE": "multilingual", 
   
   # Base URL setting:
   # URL for local Ollama server, you can leave it if you dont plan to use local models
@@ -178,7 +215,7 @@ eva_configuration = {
   
   # vision model setting:
   # Supports Chatgpt-4o-mini, Groq-llama-3.2-11b-vision (free) and Ollama llava-phi3(local), recommend: 4omini, but llava-phi3 is very small and free. 
-    "VISION_MODEL": "openai", 
+    "VISION_MODEL": "chatgpt", 
   
   # Speech-to-text model setting:
   # supports OpenAI Whisper, Groq(free) and Faster-whisper(local).  
@@ -190,7 +227,7 @@ eva_configuration = {
   
   # Summarization model setting:
   # Supports groq-llama3.1-8b, Anthropic-claude-haiku3.5 and Ollama-llama3.2(local).
-    "SUMMARIZE_MODEL": "llama" 
+    "SUMMARIZE_MODEL": "chatgpt" 
 }
 ```
 
@@ -199,12 +236,14 @@ The best combination(my preference):
 - Chatgpt-4o-mini as the image model, because of accuracy and low cost.
 - Faster-whisper as the STT model. since this local approach is actually 2x faster than all online models.
 - Elevenlabs as the TTS model, for the best quality.
+- Chatgpt-4o-mini as the summarization model, for the low cost
 
 EVA also works with a completely free combination:
 - Groq-llama-3.2 as the chat model. (if you have a good GPU, you can also use Ollama-llama3.1-70b)
 - Ollama-llava-phi3 as the image model.
 - Faster-whisper as the speech recognition model.
 - Coqui TTS as the TTS model.
+- llama3.1-8b as the summarization model
 
 The performance is also good if you have a decent GPU. 
 Groq is free too but it has a limit for token usage per minute. So you might run out of tokens quickly.
@@ -218,11 +257,16 @@ Groq is free too but it has a limit for token usage per minute. So you might run
 - Image generation tool requires a midjourney account and a private discord server.
   Need include the discord channel information in .env file.
 
-If you want to disable some tools that are not needed, just change the client setting in related .py file.
+- Add tools: for all langchain supported tools, you can modify app/tools/__init__.py built_in_tools list,
+  If you want to write your own tools, you can just follow the langchain tool template, then place the file in app/tools/ folder.  
+
+- Disable tools: If you want to disable some tools that are not needed, just change the client setting in related .py file.
 
 ```python
     client: str = "none"
 ```
+
+
 ### 🧰 Exit & Shutdown
 
 EVA will shutdown if you say "exit" or "bye"
@@ -244,11 +288,12 @@ My most important goal is to make Adam happy.
 ```
 ### 📷 Setup Photo ID and Voice ID
 EVA can recognize faces and voices of different people.
-- Setup photo IDs by adding clear frontal photos in app/data/pid/, name the file with your name.
-- Setup voice IDs by adding recorded speech audio(more than 10s) in app/data/void/ and modify the database.
+- Setup photo IDs by adding a photo with clear face in app/data/pid/.
+- Setup voice IDs by adding recorded speech audio(more than 10s) in app/data/void/.
+- You have to update the 'ids' table in app/data/database/eva.db to link your name to the filename.
 
 ### 🎤 Speech Voice
-You can customize EVA's voice by changing the TTS class in app/utils/tts/ folder. model_elevenlabs.py, model_openai.py or model_coqui.py. 
+You can customize EVA's voice by changing voice IDs in the TTS class in app/utils/tts/ folder. model_elevenlabs.py, model_openai.py or model_coqui.py. 
 Please refer to the official document of these models for the voice ID options.
 
 
@@ -264,7 +309,7 @@ This project is licensed under the MIT License.
 
 ## 📊 Credits & Acknowledgments
 
-This project wouldn't be possible without these amazing open-source projects:
+This project would not be possible without these amazing open-source projects:
 
 ### Core & Language Models
 - [LangChain](https://github.com/langchain-ai/) - Amazing AI Dev Framework 
@@ -272,7 +317,6 @@ This project wouldn't be possible without these amazing open-source projects:
 - [Ollama](https://github.com/ollama/) - Best local model deployment
 - [Numpy](https://github.com/numpy/) - The Numpy
 - [FastAPI](https://github.com/fastapi/) - Excellent API framework
-- [Tqdm](https://github.com/tqdm/) - Great progress bar
 
 ### Utility modules
 - [OpenCV](https://github.com/opencv/) - Legendary Vision Library
@@ -283,6 +327,7 @@ This project wouldn't be possible without these amazing open-source projects:
 - [PyAudio](https://github.com/jleb/pyaudio) - Powerful Audio I/O 
 - [Wespeaker](https://github.com/wenet-e2e/wespeaker) - Speaker verification
 - [NLTK](https://github.com/nltk/) - Natural Language Toolkit
+- [Tqdm](https://github.com/tqdm/) - Great progress bar
 
 ### Tools development
 - [Chromium](https://github.com/chromium/) - Best open-source web browser

@@ -1,6 +1,7 @@
 from datetime import datetime
 from config import logger
 from typing import Dict, Callable, Optional
+from pathlib import Path
 
 class Speaker:
     """
@@ -17,9 +18,9 @@ class Speaker:
         speak: Speak the given text using the selected speaker model.
     """
     
-    def __init__(self, speaker_model: str = "coqui", language: str = "en", media_folder: str = "/media"):
+    def __init__(self, speaker_model: str = "coqui", language: str = "en"):
         self._model_selection: str = speaker_model.upper()
-        self._media_folder: str = media_folder
+        self._media_folder: str = self._get_data_path()
         self._language: str = language
         self.model = self._initialize_model()
         
@@ -79,7 +80,9 @@ class Speaker:
         
     def get_audio(self, text: str) -> str:
         """ Generate audio from text and save it to the media folder """
-        return self.model.generate_audio(text, self._media_folder)
+        return self.model.generate_audio(text, self._language, self._media_folder)
     
-        
+    def _get_data_path(self) -> Path:
+        """Return the path to the voice database."""
+        return Path(__file__).resolve().parents[2] / 'data' / 'media'
         

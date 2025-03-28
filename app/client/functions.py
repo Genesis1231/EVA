@@ -10,6 +10,11 @@ import cv2
 
     
 def convert_audio_data(mp3_data: str) -> Optional[np.ndarray]:
+    """Convert the given MP3 data to an audio numpy array."""
+    
+    if not mp3_data:
+        raise ValueError("No MP3 data provided")
+    
     try:
         mp3_data = base64.b64decode(mp3_data)
         audio = AudioSegment.from_mp3(BytesIO(mp3_data))

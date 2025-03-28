@@ -46,12 +46,12 @@
 ################################################################################################
 
 eva_configuration = {
-    "DEVICE": "desktop", 
+    "DEVICE": "mobile", 
     "LANGUAGE": "en",
     "BASE_URL": "http://localhost:11434",
     "CHAT_MODEL": "claude",
     "VISION_MODEL": "groq",
-    "STT_MODEL": "faster-whisper",
+    "STT_MODEL": "whisper",
     "TTS_MODEL": "elevenlabs",
-    "SUMMARIZE_MODEL": "llama"
+    "SUMMARIZE_MODEL": "chatgpt"
 }

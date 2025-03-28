@@ -69,9 +69,10 @@ class DataManager:
                 data = await self.session_data.get()
                 if data is None:
                     continue
-                
+
                 data_type = data["type"]
                 content = data["content"]
+                
                 result = None
                 
                 # process the data based on the data type

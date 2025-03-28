@@ -5,20 +5,30 @@ from typing_extensions import Dict, List, Optional
  
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi import File, UploadFile, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 import uvicorn
+from pathlib import Path
 
 from client.data_manager import DataManager
 
 
 class ConnectionManager:
-    def __init__(self, stt_model: str, vision_model: str, base_url: str):
+    def __init__(self, stt_model: str, vision_model: str):
         self.app = FastAPI()
-        self.data_manager = DataManager(stt_model, vision_model, base_url) 
+        self.data_manager = DataManager(stt_model, vision_model) 
         
         self.media_folder: str = "/media" # TODO: make this configurable
         self.client_id: Optional[str] = None
         self.active_connections: Dict[str, WebSocket] = {}
+        
+        # Common CORS headers for file downloads
+        self.cors_headers = {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Accept, Range, *",
+            "Access-Control-Max-Age": "86400",  # 24 hours
+        }
+        
         self.setup_routes()
 
     async def connect(self, websocket: WebSocket, client_id: str):
@@ -93,19 +103,75 @@ class ConnectionManager:
         #     return {"url": file_path}
 
         @self.app.get("/download/{file_type}/{filename}")
-        async def download_file(file_type: str, filename: str):
+        async def download_file(file_type: str, filename: str, session_id: Optional[str] = None):
+            """
+            GET endpoint to serve audio and image files. This handles the actual file downloads.
+            For browsers using CORS, the preflight OPTIONS request will be handled by options_download_file below.
+            
+            The relationship between this GET endpoint and the OPTIONS endpoint:
+            - Modern browsers using CORS will first send an OPTIONS request (preflight) 
+            - After receiving a successful response from OPTIONS, they'll send the actual GET request
+            - Both endpoints use the same CORS headers from self.cors_headers
+            """
             if file_type not in ["images", "audio"]:
                 raise HTTPException(status_code=400, detail="Invalid file type.")
             
-            file_path = os.path.join("/media", file_type, filename)
+            if not session_id:
+                logger.warning(f"File request without session ID for file: {filename} - this may cause caching issues")
+                
+            # Construct the path relative to the app root directory
+            file_path = os.path.join(os.getcwd(), "app", "data", "media", file_type, filename)
                 
             if not os.path.isfile(file_path):
+                logger.error(f"File not found: {file_path}")
                 raise HTTPException(status_code=404, detail=f"File: {filename} not found")
 
             try:
-                return FileResponse(file_path, filename=filename, media_type="application/octet-stream")
+                # Use appropriate media type based on file_type
+                media_type = "audio/mpeg" if file_type == "audio" else "image/jpeg"
+                
+                # Create a response with the file
+                response = FileResponse(
+                    file_path, 
+                    filename=filename, 
+                    media_type=media_type
+                )
+                
+                # Add CORS headers from the common set
+                for header, value in self.cors_headers.items():
+                    response.headers[header] = value
+                
+                # Set caching headers based on session_id
+                if session_id:
+                    # Use cache control that allows caching but requires revalidation
+                    response.headers["Cache-Control"] = "private, max-age=60, must-revalidate"
+                    response.headers["Vary"] = "session_id"  # Vary on the session ID
+                else:
+                    # No caching if no session ID (to be safe)
+                    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate"
+                
+                return response
             except Exception as e:
+                logger.error(f"Error accessing file: {str(e)}")
                 raise HTTPException(status_code=500, detail=f"Error accessing file: {str(e)}")
+
+        @self.app.options("/download/{file_type}/{filename}")
+        async def options_download_file(file_type: str, filename: str):
+            """
+            Handle CORS preflight requests for the download endpoint.
+
+            1. Browsers send preflight OPTIONS requests before making cross-origin requests
+            2. The preflight verifies that the server allows the actual request
+            3. Without this endpoint, browsers would block cross-origin requests to our files
+            
+            We use the same CORS headers as the GET endpoint for consistency.
+            The actual file download happens in the GET endpoint after this preflight check.
+            """
+            # Log the CORS preflight request
+            logger.debug(f"Handling OPTIONS request for: /download/{file_type}/{filename}")
+            
+            # Use common CORS headers for the preflight response
+            return JSONResponse(content={}, headers=self.cors_headers)
 
         @staticmethod
         def is_valid(filename: str, allowed_extensions: List[str]) -> bool:
@@ -113,11 +179,6 @@ class ConnectionManager:
 
     def get_message(self):
         return self.data_manager.get_first_data()
-
-    # def run_server(self):
-    #     config = uvicorn.Config(self.server.get_app(), host="0.0.0.0", port=8080)
-    #     server = uvicorn.Server(config)
-    #     server.serve()
 
     def run_server(self):
         uvicorn.run(self.app, host="0.0.0.0", port=8080)

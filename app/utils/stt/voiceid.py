@@ -48,6 +48,10 @@ class VoiceIdentifier:
     def _convert_numpy_to_torch(audio_array: np.ndarray) -> torch.Tensor:
         """ Convert numpy audio array to torch tensor with proper formatting. """
         
+        if not audio_array:
+            logger.error("No audio array provided")
+            return None
+        
         # Convert to float32 and normalize if needed
         if audio_array.dtype in [np.int16, np.int32]:
             audio_array = audio_array.astype(np.float32) / 32768.0
