@@ -55,7 +55,7 @@ EVA got a bit carried away and collected 6 youtube videos about Persian cats. ðŸ
 ## ðŸ“œ Updates
 - 2025-March update: React version of the web interface.<br/>
   I vibe coded a simple web interface for EVA. It demonstrates how EVA works with the mobile client FastAPI endpoint. It is not perfect, but it works.
-  ![EVA Web](docs/screen.png)
+  <img src="docs/screen.png" width="50%" height="50%">
 
 
 How to Use:
