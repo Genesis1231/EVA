@@ -54,17 +54,14 @@ EVA got a bit carried away and collected 6 youtube videos about Persian cats. ðŸ
 
 ## ðŸ“œ Updates
 - 2025-March update: React version of the web interface.<br/>
-  I vibe coded a simple web interface for EVA. It demonstrates how EVA works with the mobile client FastAPI endpoint. It is not perfect, but it works. <br/>
+  I vibe coded a simple web interface for EVA. It demonstrates how EVA works with the mobile client FastAPI endpoint. It is not perfect, but it works. Image and music generation area are not implemented yet. <br/>
   <img src="docs/screen.png" width="50%" height="50%">
 
 How to Use:
 1. Click the "Start" button to initialize the interface.
 2. Allow browser permissions for camera and microphone when prompted.
 3. EVA will initiate the conversation.
-4. To speak to EVA:
-   - Hold down the spacebar while speaking
-   - Or press and hold the "Speak" button
-   - Release when done speaking
+4. Hold down the spacebar while speaking, release when done.
 5. The camera is always on, providing visual context to EVA automatically.
 
 - 2025-February update: WebSocket connection improved.<br/>
