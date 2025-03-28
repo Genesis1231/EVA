@@ -54,9 +54,20 @@ EVA got a bit carried away and collected 6 youtube videos about Persian cats. �
 
 ## 📜 Updates
 - 2025-March update: React version of the web interface.<br/>
-  I vibe coded a simple web interface for EVA. It works with the mobile client module.
+  I vibe coded a simple web interface for EVA. It demonstrate how EVA works with the mobile client endpoint.
   ![EVA Web](docs/screen.png)
-  Please refer to the WebSocket documentation for more details.
+
+
+### How to Use
+
+1. Click the "Start" button to initialize the interface.
+2. Allow browser permissions for camera and microphone when prompted.
+3. EVA will initiate the conversation.
+4. To speak to EVA:
+   - Hold down the spacebar while speaking
+   - Or press and hold the "Speak" button
+   - Release when done speaking
+5. The camera is always on, providing visual context to EVA automatically.
 
 - 2025-February update: WebSocket connection improved.<br/>
   Eva now supports WebSocket connection for remote control.
@@ -248,6 +259,25 @@ EVA also works with a completely free combination:
 The performance is also good if you have a decent GPU. 
 Groq is free too but it has a limit for token usage per minute. So you might run out of tokens quickly.
 
+### Web Interface Setup
+React verison:
+- Node.js (v14 or later)
+- EVA backend server running on port 8080
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open your browser to http://localhost:3000
+4. Config the EVA to mobile mode
+5. Start the EVA backend server on localhost:8080
+6. Enjoy!
 
 ### 🔧 Tool Setup
 
@@ -265,7 +295,6 @@ Groq is free too but it has a limit for token usage per minute. So you might run
 ```python
     client: str = "none"
 ```
-
 
 ### 🧰 Exit & Shutdown
 
