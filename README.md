@@ -54,7 +54,7 @@ EVA got a bit carried away and collected 6 youtube videos about Persian cats. �
 
 ## 📜 Updates
 - 2025-March update: React version of the web interface.<br/>
-  I vibe coded a simple web interface for EVA. It demonstrates how EVA works with the mobile client FastAPI endpoint. It is not perfect, but it works. Image and music generation area are not implemented yet. <br/>
+  I vibe coded a simple web interface for EVA. It demonstrates how EVA works with the mobile client via FastAPI endpoint. It is not perfect, but it works. Image and music generation area are not implemented yet. <br/>
   <img src="docs/screen.png" width="50%" height="50%">
 
 How to Use:
@@ -66,7 +66,7 @@ How to Use:
 
 - 2025-February update: WebSocket connection improved.<br/>
   Eva now supports WebSocket connection for remote control.
-  You can use the WebSocket to interact with EVA. This version works much better with the mobile app.
+  You can use the WebSocket to interact with EVA. This version works much better with the API.
 
 - 2024-Christmas update: Initialization process improved.<br/>
   Eva now guides the user to complete the initialization process. Record the Voice ID and Photo ID for personalized interaction.
@@ -84,7 +84,7 @@ EVA is built on LangGraph framework, with some customized modules and tools. Imp
 - Configurable model selection for LLM, TTS, STT, and vision etc.
 - Integrated with OpenAI, Anthropic, Groq, Google, and Ollama.
 - Easy modification of prompts and tools.
-- Supports both desktop and mobile app.
+- Supports both terminal and API. (iOS app is testing)
 
 ### 🖼️ Interactive experience
 - Voice ID and vision ID for personalized interaction.
