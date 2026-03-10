@@ -1,6 +1,6 @@
-# EVA has been reborn!
+# EVA has been reborn! (https://github.com/Genesis1231/Eva01)
 <div align="center">
- ![Eva01](https://github.com/Genesis1231/Eva01)
+
 
 ![EVA Logo](docs/logo.png)
 
