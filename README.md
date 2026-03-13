@@ -1,4 +1,4 @@
-# E.V.A. - Enhance Voice Assistant | EVA has been reborn: https://github.com/Genesis1231/Eva01
+# E.V.A. - Enhance Voice Assistant 
 <div align="center">
 
 
@@ -10,6 +10,9 @@
 [![GitHub Issues](https://img.shields.io/github/issues/Genesis1231/EVA)](https://github.com/Genesis1231/EVA/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/Genesis1231/EVA)](https://github.com/Genesis1231/EVA/stargazers)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+EVA has been reborn: 
+[![Eva01](https://github.com/Genesis1231/Eva01/docs/banner.jpg)](https://github.com/Genesis1231/Eva01)
 
 </div>
 
