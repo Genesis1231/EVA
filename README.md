@@ -1,7 +1,5 @@
 # E.V.A. - Enhance Voice Assistant 
 <div align="center">
-
-
 ![EVA Logo](docs/logo.png)
 
 *Multimodal, Multilingual, Cross Platform, Modular Architecture*
@@ -15,6 +13,9 @@
 
 # EVA has been reborn: 
 [![Eva01](https://github.com/Genesis1231/Eva01/blob/main/docs/banner.jpg)](https://github.com/Genesis1231/Eva01)
+<div align="center">
+https://github.com/Genesis1231/Eva01 
+</div>
 
 ## 🎯 The Vision Behind EVA
 
