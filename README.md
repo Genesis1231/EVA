@@ -1,5 +1,6 @@
 # E.V.A. - Enhance Voice Assistant 
 <div align="center">
+
 ![EVA Logo](docs/logo.png)
 
 *Multimodal, Multilingual, Cross Platform, Modular Architecture*
